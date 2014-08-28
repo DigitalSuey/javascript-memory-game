@@ -1,0 +1,51 @@
+/* Styles */
+button{
+	background-color: tomato;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	font-size: 2em;
+}
+
+button:hover{
+	background-color: darkred;
+}
+
+.show {
+  transition: opacity 400ms;
+}
+.hide {
+  opacity: 0;
+}
+
+table, tr, td{
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+}
+
+table td{
+	background-image: url(https://i2.wp.com/codebits.eu/logos/defaultavatar.jpg);
+	background-repeat: no-repeat;
+    background-position: center; 
+	height: 95px;
+	width: 95px;
+	border: 1px solid #666;
+	cursor: pointer;
+}
+
+table td img{
+	height: 91px;
+	width: 91px;
+}
+
+.invisible{
+	display: none;
+}
+
+.block{
+	z-index: 9;
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+}
