@@ -43,7 +43,7 @@ table td img{
 	display: none;
 }
 
-.block{
+#block{
 	z-index: 9;
     min-width: 100%;
     min-height: 100%;

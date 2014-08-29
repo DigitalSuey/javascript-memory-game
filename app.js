@@ -72,6 +72,12 @@ function buildMatrix(badgesArray){
 	htmlString += "</table>";
 	// Insert table markup into HTML wrapper
 	document.getElementById("matrixWrapper").innerHTML = htmlString;
+	// Block game matrix
+	document.getElementById("block").classList.remove("invisible");
+	// Start game button markup
+	var startButton = "<button id=\"startGameButton\" onclick=\"startGame()\">Iniciar Jogo</button>";
+	// Inject new button to button wrapper
+	document.getElementById("buttonWrapper").insertAdjacentHTML('beforeend', startButton);
 }
 
 function shuffle(array) {
@@ -115,6 +121,9 @@ function flipElement(elementId, imageId){
 		if (firstFlip == lastFlip) {
 			// Same badges! Increment counter's value
 			counter++;
+			// Remove onClick event
+			document.getElementById(firstElement).removeAttribute('onClick');
+			document.getElementById(lastElement).removeAttribute('onClick');
 			// Reset global VAR values
 			firstFlip = undefined;
 			lastFlip = undefined;
@@ -137,4 +146,14 @@ function flipElement(elementId, imageId){
 			// Finished the game! Stop timer
 		}
 	}
+}
+
+function startGame() {
+	// Remove block
+	document.getElementById("block").className += ' invisible';
+	startTimer();
+}
+
+function startTimer() {
+	
 }
