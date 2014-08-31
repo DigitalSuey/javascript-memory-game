@@ -1,6 +1,10 @@
 /* Styles */
+*{
+	font-family: Helvetica, Arial, sans-serif;
+}
+
 button{
-	background-color: tomato;
+	background-color: darkgreen;
 	color: #fff;
 	border: none;
 	cursor: pointer;
@@ -8,14 +12,11 @@ button{
 }
 
 button:hover{
-	background-color: darkred;
+	background-color: lightgreen;
 }
 
-.show {
-  transition: opacity 400ms;
-}
-.hide {
-  opacity: 0;
+#startGameButton{
+	margin: 50px 0 10px 200px;
 }
 
 table, tr, td{
@@ -26,6 +27,8 @@ table, tr, td{
 
 table td{
 	background-image: url(https://i2.wp.com/codebits.eu/logos/defaultavatar.jpg);
+	background-size: 80px;
+	background-color: black;
 	background-repeat: no-repeat;
     background-position: center; 
 	height: 95px;
@@ -48,4 +51,22 @@ table td img{
     min-width: 100%;
     min-height: 100%;
     position: absolute;
+}
+
+#time{
+	margin: 10px 0 20px 190px;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+a, a:visited{
+	text-decoration: none;
+	cursor: pointer;
+	color: darkgreen;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+a:hover{
+	color: lightgreen;
 }

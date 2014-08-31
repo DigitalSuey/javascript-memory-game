@@ -1,7 +1,10 @@
+// Global VARs
 var firstFlip, lastFlip, firstElement, lastElement = undefined;
 var counter = 0;
+var startTime;
 // Invoke SAPO's services
 function getBadges() {
+	// Request images for memory game
     request = new XMLHttpRequest();
 	request.open('GET', 'https://services.sapo.pt/Codebits/listbadges ', true);
 
@@ -35,6 +38,17 @@ function getBadges() {
 			}
 			// Duplicate random badge array's content
 			selectedBadges = selectedBadges.concat(selectedBadges);
+			// Check if we had a previous games start button and remove it
+			if (document.getElementById("startGameButton") != undefined) {
+				document.getElementById("startGameButton").parentNode.removeChild(document.getElementById("startGameButton"));
+				// Reset values for the next game
+				document.getElementById("time").innerHTML = "";
+				if (!document.getElementById("shareLink").classList.contains("invisible")) {
+					document.getElementById("shareLink").className += ' invisible';
+				}
+				counter = 0;
+				startTime = undefined;
+			}
 			// Build the game board
 			buildMatrix(selectedBadges);
 		} else {
@@ -75,9 +89,11 @@ function buildMatrix(badgesArray){
 	// Block game matrix
 	document.getElementById("block").classList.remove("invisible");
 	// Start game button markup
-	var startButton = "<button id=\"startGameButton\" onclick=\"startGame()\">Iniciar Jogo</button>";
+	var startButton = "<button id=\"startGameButton\">Iniciar Jogo</button>";
 	// Inject new button to button wrapper
-	document.getElementById("buttonWrapper").insertAdjacentHTML('beforeend', startButton);
+	document.getElementById("buttonWrapper").insertAdjacentHTML('afterend', startButton);
+	// Add onClick event to unblock game and fire the timer
+	document.getElementById("startGameButton").addEventListener("click", function() { setInterval(time, 1000) }, false);
 }
 
 function shuffle(array) {
@@ -122,8 +138,8 @@ function flipElement(elementId, imageId){
 			// Same badges! Increment counter's value
 			counter++;
 			// Remove onClick event
-			document.getElementById(firstElement).removeAttribute('onClick');
-			document.getElementById(lastElement).removeAttribute('onClick');
+			document.getElementById(firstElement).parentNode.removeAttribute('onClick');
+			document.getElementById(lastElement).parentNode.removeAttribute('onClick');
 			// Reset global VAR values
 			firstFlip = undefined;
 			lastFlip = undefined;
@@ -143,7 +159,9 @@ function flipElement(elementId, imageId){
 		}
 		// Check how many correct associations were made
 		if (counter == 9) {
-			// Finished the game! Stop timer
+			// Finished the game! Stop timer and block the board
+			stopGame();
+			document.getElementById("block").className += ' invisible';
 		}
 	}
 }
@@ -151,9 +169,52 @@ function flipElement(elementId, imageId){
 function startGame() {
 	// Remove block
 	document.getElementById("block").className += ' invisible';
-	startTimer();
+	// Save start time
+	startTime = new Date();
 }
 
-function startTimer() {
-	
+function time(){
+	// Hide the blocker if the game started
+	if (!document.getElementById("block").classList.contains("invisible")) {
+		document.getElementById("block").className += ' invisible';
+	}
+	// Save the start time
+	if (startTime == undefined) {
+		startTime = new Date();
+		// Reset the finish time
+		finishTime = undefined;
+	}
+	// Get current time
+    var currentTime = new Date();
+    // Diference between start time and current time in miliseconds
+    var timeDiff = currentTime - startTime;
+    // Remove miliseconds
+    timeDiff /= 1000;
+    // Get seconds
+    var seconds = Math.round(timeDiff % 60);
+    // Remove seconds from the date
+    timeDiff = Math.floor(timeDiff / 60);
+    // Get minutes
+    var minutes = Math.round(timeDiff % 60);
+    // Remove minutes from the date
+    timeDiff = Math.floor(timeDiff / 60);
+    // Get hours
+    var hours = Math.round(timeDiff % 24);
+    // Remove hours from the date
+    timeDiff = Math.floor(timeDiff / 24);
+    // If the game has already finished only insert finished time
+    if (counter == 9) {
+		document.getElementById("time").innerHTML = finishTime;
+	}else{
+		document.getElementById("time").innerHTML = "Tempo: " + hours + ":" + minutes + ":" + seconds;
+    }
+}
+
+function stopGame() {
+	// Get finish time
+	finishTime = document.getElementById("time").innerHTML;
+	// Add the share link's href dynamicaly targeted to a new tab and show it
+	document.getElementById("shareLink").setAttribute("href", "https://twitter.com/intent/tweet/?text=Memory JavaScript FTW em: "+finishTime.substring(7, finishTime.length)+".");
+	document.getElementById("shareLink").setAttribute("target", "_blank");
+	document.getElementById("shareLink").classList.remove("invisible");
 }
