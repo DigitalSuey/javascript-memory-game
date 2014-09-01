@@ -2,6 +2,11 @@
 var firstFlip, lastFlip, firstElement, lastElement = undefined;
 var counter = 0;
 var startTime;
+var timer;
+// Define interval to run time function
+var startGame = function interval() {
+	timer = setInterval(time, 1000);
+};
 // Invoke SAPO's services
 function getBadges() {
 	// Request images for memory game
@@ -48,6 +53,8 @@ function getBadges() {
 				}
 				counter = 0;
 				startTime = undefined;
+				// Stop interval
+				clearInterval(timer);
 			}
 			// Build the game board
 			buildMatrix(selectedBadges);
@@ -93,7 +100,7 @@ function buildMatrix(badgesArray){
 	// Inject new button to button wrapper
 	document.getElementById("buttonWrapper").insertAdjacentHTML('afterend', startButton);
 	// Add onClick event to unblock game and fire the timer
-	document.getElementById("startGameButton").addEventListener("click", function() { setInterval(time, 1000) }, false);
+	document.getElementById("startGameButton").addEventListener("click", startGame, false);
 }
 
 function shuffle(array) {
@@ -164,13 +171,6 @@ function flipElement(elementId, imageId){
 			document.getElementById("block").className += ' invisible';
 		}
 	}
-}
-
-function startGame() {
-	// Remove block
-	document.getElementById("block").className += ' invisible';
-	// Save start time
-	startTime = new Date();
 }
 
 function time(){
